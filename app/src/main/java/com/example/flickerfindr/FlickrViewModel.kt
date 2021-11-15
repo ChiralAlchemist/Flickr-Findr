@@ -8,7 +8,10 @@ import com.example.flickerfindr.api.FlickrApi
 import com.example.flickerfindr.api.FlickrPhoto
 import kotlinx.coroutines.launch
 
-class FlickrViewModel : ViewModel () {
+
+enum class FlickrApiStatus { LOADING, ERROR, DONE }
+
+class FlickrViewModel : ViewModel() {
     private val _selectedImage = MutableLiveData<String>()
     val selectedImage: LiveData<String> = _selectedImage
 
@@ -21,6 +24,8 @@ class FlickrViewModel : ViewModel () {
     private val _searchLocal = MutableLiveData<Boolean>(true)
     val searchLocal: LiveData<Boolean> = _searchLocal
 
+    private val _status = MutableLiveData<FlickrApiStatus>()
+    val status: LiveData<FlickrApiStatus> = _status
 
     fun setSelectedImage(selected: FlickrPhoto) {
         _selectedImage.value = constructImageUrl(selected)
@@ -32,23 +37,26 @@ class FlickrViewModel : ViewModel () {
 
     fun getSearchResults(searchTerm: String) {
         if (searchTerm.isEmpty()) return
-        try {
+        _status.value = FlickrApiStatus.LOADING
             viewModelScope.launch {
-
-                val localStr = if (_searchLocal.value == true) "6" else "1"
-                val newestStr =
-                    if (_searchNewest.value == true) "date-posted-desc" else "date-posted-asc"
-                val photos = FlickrApi.retrofitService.getSearchPhotos(
-                    searchTerm,
-                    localStr,
-                    newestStr
-                )
-                _displayedPhotos.value = photos.photoData.photos.subList(0, 25)
+                try {
+                    val localStr = if (_searchLocal.value == true) "6" else "1"
+                    val newestStr =
+                        if (_searchNewest.value == true) "date-posted-desc" else "date-posted-asc"
+                    val photos = FlickrApi.retrofitService.getSearchPhotos(
+                        searchTerm,
+                        localStr,
+                        newestStr
+                    )
+                    _displayedPhotos.value = photos.photoData.photos.subList(0, 25)
+                    _status.value = FlickrApiStatus.DONE
+                } catch (e: Exception) {
+                    _displayedPhotos.value = listOf()
+                    _status.value = FlickrApiStatus.ERROR
+                }
             }
 
-        } catch (e: Exception) {
-            TODO("Add exception handling")
-        }
+
     }
 
     fun setSearchLocal(checked: Boolean) {

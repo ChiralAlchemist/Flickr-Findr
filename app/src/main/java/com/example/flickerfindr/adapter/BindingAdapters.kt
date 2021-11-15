@@ -1,11 +1,13 @@
 package com.example.flickerfindr.adapter
 
+import android.view.View
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.flickerfindr.FlickrApiStatus
 import com.example.flickerfindr.R
 import com.example.flickerfindr.api.FlickrPhoto
 
@@ -28,5 +30,25 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
                     .error(R.drawable.image_broken_variant)
             )
             .into(imgView)
+    }
+}
+
+@BindingAdapter("flickrApiStatus")
+fun bindStatus(
+    statusImageView: ImageView,
+    status: FlickrApiStatus?
+) {
+    when (status) {
+        FlickrApiStatus.LOADING -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.loading_animation)
+        }
+        FlickrApiStatus.DONE -> {
+            statusImageView.visibility = View.GONE
+        }
+        FlickrApiStatus.ERROR -> {
+            statusImageView.visibility = View.VISIBLE
+            statusImageView.setImageResource(R.drawable.image_broken_variant)
+        }
     }
 }
