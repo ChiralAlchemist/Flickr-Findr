@@ -9,14 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.flickerfindr.adapter.FlickrListAdapter
-import com.example.flickerfindr.databinding.FragmentFirstBinding
+import com.example.flickerfindr.databinding.FragmentSearchBinding
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment() {
+class SearchFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentSearchBinding? = null
     private val viewModel: FlickrViewModel by activityViewModels<FlickrViewModel>()
 
     // This property is only valid between onCreateView and
@@ -27,7 +28,7 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
 
     }
