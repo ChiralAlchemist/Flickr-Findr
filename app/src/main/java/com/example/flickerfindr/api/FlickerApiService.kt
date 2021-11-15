@@ -4,10 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 //private const val BASE_URL = "https://www.flickr.com/"
@@ -25,11 +22,13 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface FlickerApiService {
-    @GET("services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${API_KEY}&text={searchTerm}")
-    suspend fun getSearchPhotos(@Path("searchTerm") searchTerm : String) : String
 
-    @GET("services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${API_KEY}&text")
-    suspend fun echoTest(@Query("text") searchTerm: String) : PhotoResponse
+    @GET("services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${API_KEY}&text&accuracy&sort")
+    suspend fun getSearchPhotos(
+        @Query("text") searchTerm: String,
+        @Query("accuracy") local: String,
+        @Query("sort") newest: String
+    ): PhotoResponse
 }
 
 object FlickrApi {

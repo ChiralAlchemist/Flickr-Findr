@@ -7,4 +7,5 @@ data class FlickrPhoto(
     val server: String,
     val farm: String,
     val title: String
-    )
+)
+

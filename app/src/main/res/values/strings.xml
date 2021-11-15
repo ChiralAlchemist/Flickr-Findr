@@ -9,4 +9,11 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="search">search</string>
+    <string name="search_bar_hint">Search Photos</string>
+    <string name="search_button_text">Search</string>
+    <string name="newest_chip_test">newest</string>
+    <string name="oldest_chip_text">oldest</string>
+    <string name="local_chip_text">local</string>
+    <string name="global_chip_text">global</string>
 </resources>
