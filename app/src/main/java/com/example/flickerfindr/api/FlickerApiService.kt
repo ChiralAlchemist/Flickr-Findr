@@ -23,11 +23,12 @@ private val retrofit = Retrofit.Builder()
 
 interface FlickerApiService {
 
-    @GET("services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${API_KEY}&text&accuracy&sort")
+    @GET("services/rest/?format=json&nojsoncallback=1&method=flickr.photos.search&api_key=${API_KEY}&per_page=25&text&accuracy&sort&page")
     suspend fun getSearchPhotos(
         @Query("text") searchTerm: String,
         @Query("accuracy") local: String,
-        @Query("sort") newest: String
+        @Query("sort") newest: String,
+        @Query("page") page: String
     ): PhotoResponse
 }
 

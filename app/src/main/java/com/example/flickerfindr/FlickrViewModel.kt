@@ -27,6 +27,9 @@ class FlickrViewModel : ViewModel() {
     private val _status = MutableLiveData<FlickrApiStatus>()
     val status: LiveData<FlickrApiStatus> = _status
 
+    private val _page = MutableLiveData<Int>(1)
+    val page: LiveData<Int> = _page
+
     fun setSelectedImage(selected: FlickrPhoto) {
         _selectedImage.value = constructImageUrl(selected)
     }
@@ -44,11 +47,12 @@ class FlickrViewModel : ViewModel() {
                     val newestStr =
                         if (_searchNewest.value == true) "date-posted-desc" else "date-posted-asc"
                     val photos = FlickrApi.retrofitService.getSearchPhotos(
-                        searchTerm,
+                        searchTerm = searchTerm,
                         localStr,
-                        newestStr
+                        newestStr,
+                        _page.value.toString()
                     )
-                    _displayedPhotos.value = photos.photoData.photos.subList(0, 25)
+                    _displayedPhotos.value = photos.photoData.photos
                     _status.value = FlickrApiStatus.DONE
                 } catch (e: Exception) {
                     _displayedPhotos.value = listOf()
@@ -65,5 +69,13 @@ class FlickrViewModel : ViewModel() {
 
     fun setSearchNewest(checked: Boolean) {
         _searchNewest.value = checked
+    }
+
+    fun decreasePage() {
+        _page.value = _page.value?.minus(1)
+    }
+
+    fun increasePage() {
+        _page.value = _page.value?.plus(1)
     }
 }

@@ -61,7 +61,20 @@ class SearchFragment : Fragment() {
         binding.globalChip.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setSearchLocal(!isChecked)
         }
-
+        binding.nextPage.setOnClickListener {
+            viewModel.increasePage()
+            viewModel.getSearchResults(binding.textField.editText?.text.toString())
+            if (binding.prevPage.visibility == View.INVISIBLE) {
+                binding.prevPage.visibility = View.VISIBLE
+            }
+        }
+        binding.prevPage.setOnClickListener {
+            viewModel.decreasePage()
+            viewModel.getSearchResults(binding.textField.editText?.text.toString())
+            if (viewModel.page.value!! < 2) {
+                binding.prevPage.visibility = View.INVISIBLE
+            }
+        }
     }
 
 
